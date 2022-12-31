@@ -85,6 +85,11 @@ func main() {
 				continue
 			}
 
+			if iid == "" {
+				log.Printf("INFO: skipping non-dispatched call")
+				continue
+			}
+
 			log.Printf("INFO: Writing call %s to %s/%s (%d bytes)", iid, b, iid, len(data))
 			err = ioutil.WriteFile(b+string(os.PathSeparator)+iid, data, 0644)
 			if err != nil {
