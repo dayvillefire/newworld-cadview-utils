@@ -155,22 +155,38 @@ func main() {
 						AllowedMentions: &discordgo.MessageAllowedMentions{},
 					}
 
+					// Initial message, from which to build the "channel"
 					res, err := discordSession.ChannelMessageSendComplex(Config.Discord.ChannelID, &m)
 					if err != nil {
 						log.Printf("ERR: ChannelMessageSendComplex(): %s", err.Error())
 						break
 					}
-					t, err := discordSession.MessageThreadStartComplex(Config.Discord.ChannelID, res.ID, &discordgo.ThreadStart{
-						Name: fmt.Sprintf("%s PRI %s (%s)", c.Location, c.CallPriority, c.CallType),
-						//AutoArchiveDuration: 60,
-						Invitable:        false,
-						RateLimitPerUser: 10,
-					})
-					if err != nil {
-						log.Printf("ERR: %s", err.Error())
-					} else {
-						callMap[c.CallID] = t
-						lastUpdatedMap[c.CallID] = time.Now()
+
+					// Create complex message thread
+					{
+						t, err := discordSession.MessageThreadStartComplex(Config.Discord.ChannelID, res.ID, &discordgo.ThreadStart{
+							Name: fmt.Sprintf("%s PRI %s (%s)", c.Location, c.CallPriority, c.CallType),
+							//AutoArchiveDuration: 60,
+							Invitable:        false,
+							RateLimitPerUser: 10,
+						})
+						if err != nil {
+							log.Printf("ERR: %s", err.Error())
+						} else {
+							callMap[c.CallID] = t
+							lastUpdatedMap[c.CallID] = time.Now()
+						}
+					}
+
+					// Send a message with initial times, etc
+					{
+						_, err = discordSession.ChannelMessageSendComplex(callMap[c.CallID].ID, &discordgo.MessageSend{
+							Content:         fmt.Sprintf("Call dispatched at %s", c.DispatchedDateTime),
+							AllowedMentions: &discordgo.MessageAllowedMentions{},
+						})
+						if err != nil {
+							log.Printf("ERR: ChannelMessageSendComplex(%d): %s", c.CallID, err.Error())
+						}
 					}
 				} else {
 					// Existing, so check for anything and append
