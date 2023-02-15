@@ -38,9 +38,11 @@ func main() {
 			DSN: *database,
 		}), &gorm.Config{Logger: l})
 		if err != nil {
+			log.Printf("ERR: gorm.Open: %s", err.Error())
 			panic(err)
 		}
-		err = db.AutoMigrate(&agent.CADCall{},
+		err = db.AutoMigrate(
+			&agent.CADCall{},
 			&agent.IncidentObj{},
 			&agent.NarrativeObj{},
 			&agent.UnitObj{},
@@ -49,12 +51,14 @@ func main() {
 			&agent.CallObj{},
 		)
 		if err != nil {
+			log.Printf("ERR: db.AutoMigrate: %s", err.Error())
 			panic(err)
 		}
 	}
 
 	dirents, err := os.ReadDir(*backupdir)
 	if err != nil {
+		log.Printf("ERR: os.ReadDir: %s", err.Error())
 		panic(err)
 	}
 	for _, dirent := range dirents {
@@ -74,6 +78,10 @@ func main() {
 		if err != nil {
 			log.Printf("ERROR: GetStatus(): %s", err.Error())
 			continue
+		}
+
+		if *debug {
+			log.Printf("DEBUG: CADCall : %#v", status)
 		}
 
 		if !*dryrun {
