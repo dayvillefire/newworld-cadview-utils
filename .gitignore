@@ -1,2 +1,9 @@
 go.sum
 *~
+calls.json
+
+# Binaries
+
+cmd/cadbackup/cadbackup
+cmd/cadingest/cadingest
+cmd/cadpublish/cadpublish
