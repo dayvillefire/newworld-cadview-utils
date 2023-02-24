@@ -23,6 +23,7 @@ type AppConfig struct {
 	Debug         bool                   `yaml:"debug"`
 	PollInterval  int                    `yaml:"poll-interval"`
 	ReauthMinutes int                    `yaml:"reauth-minutes"`
+	PurgeMinutes  int                    `yaml:"purge-minutes"`
 	CadInstances  map[string]CadInstance `yaml:"cad"`
 	Paths         struct {
 		SerializationFile string `yaml:"serial-file"`

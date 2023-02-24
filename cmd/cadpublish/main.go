@@ -120,10 +120,10 @@ func main() {
 		for {
 			active := []agent.CallObj{}
 			for npa, pa := range a {
-				log.Printf("INFO: Polling for active calls")
+				log.Printf("INFO[%s]: Polling for active calls", npa)
 				thisActive, err := pa.GetActiveCalls()
 				if err != nil {
-					log.Printf("ERR: GetActiveCalls(): %s", err.Error())
+					log.Printf("ERR[%s]: GetActiveCalls(): %s", npa, err.Error())
 					break
 				}
 				for _, ac := range thisActive {
@@ -145,7 +145,7 @@ func main() {
 				}
 			}
 			for _, c := range active {
-				log.Printf("INFO: Call = %d (%s - %s)", c.CallID, c.Location, c.NatureOfCall)
+				log.Printf("INFO[%s]: Call = %d (%s - %s)", agentMap[c.CallID], c.CallID, c.Location, c.NatureOfCall)
 
 				_, ok := callMap[c.CallID]
 				if !ok {
@@ -158,7 +158,7 @@ func main() {
 					// Initial message, from which to build the "channel"
 					res, err := discordSession.ChannelMessageSendComplex(Config.Discord.ChannelID, &m)
 					if err != nil {
-						log.Printf("ERR: ChannelMessageSendComplex(): %s", err.Error())
+						log.Printf("ERR[%s]: ChannelMessageSendComplex(): %s", agentMap[c.CallID], err.Error())
 						break
 					}
 
@@ -171,7 +171,7 @@ func main() {
 							RateLimitPerUser: 10,
 						})
 						if err != nil {
-							log.Printf("ERR: %s", err.Error())
+							log.Printf("ERR[%s]: MessageThreadStartComplex(): %s", agentMap[c.CallID], err.Error())
 						} else {
 							callMap[c.CallID] = t
 							lastUpdatedMap[c.CallID] = time.Now()
@@ -185,16 +185,16 @@ func main() {
 							AllowedMentions: &discordgo.MessageAllowedMentions{},
 						})
 						if err != nil {
-							log.Printf("ERR: ChannelMessageSendComplex(%d): %s", c.CallID, err.Error())
+							log.Printf("ERR[%s]: ChannelMessageSendComplex(%d): %s", agentMap[c.CallID], c.CallID, err.Error())
 						}
 					}
 				} else {
 					// Existing, so check for anything and append
 					myAgent := a[agentMap[c.CallID]]
-					log.Printf("INFO: Fetching call logs for call id %d", c.CallID)
+					log.Printf("INFO[%s]: Fetching call logs for call id %d", agentMap[c.CallID], c.CallID)
 					logs, err := myAgent.GetCallLogs(fmt.Sprintf("%d", c.CallID))
 					if err != nil {
-						log.Printf("ERR: GetCallLogs(%d): %s", c.CallID, err.Error())
+						log.Printf("ERR[%s]: GetCallLogs(%d): %s", agentMap[c.CallID], c.CallID, err.Error())
 						break
 					}
 
@@ -234,7 +234,17 @@ func main() {
 							lastUpdatedMap[c.CallID] = t
 						}
 					}
-					log.Printf("INFO: Call %d has %d log entries", c.CallID, len(logs))
+					log.Printf("INFO[%s]: Call %d has %d log entries", agentMap[c.CallID], c.CallID, len(logs))
+				}
+			}
+
+			log.Printf("INFO: Purging calls which have not been updated in over %d minutes", Config.PurgeMinutes)
+			for k, v := range lastUpdatedMap {
+				if time.Now().Local().Sub(v) > time.Minute*time.Duration(Config.PurgeMinutes) {
+					log.Printf("INFO: Removing call %d with timestamp %d, now = %d", k, v.Unix(), time.Now().Local().Unix())
+					delete(lastUpdatedMap, k)
+					delete(callMap, k)
+					delete(agentMap, k)
 				}
 			}
 
