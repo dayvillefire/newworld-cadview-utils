@@ -164,14 +164,21 @@ func main() {
 
 					// Create complex message thread
 					{
+						// Threads cannot have titles over 100 characters, otherwise we segfault
+						x := fmt.Sprintf("%s PRI %s (%s)", c.Location, c.CallPriority, c.CallType)
+						if len(x) > 100 {
+							x = x[:95] + "..."
+						}
+
 						t, err := discordSession.MessageThreadStartComplex(Config.Discord.ChannelID, res.ID, &discordgo.ThreadStart{
-							Name: fmt.Sprintf("%s PRI %s (%s)", c.Location, c.CallPriority, c.CallType),
+							Name: x,
 							//AutoArchiveDuration: 60,
 							Invitable:        false,
 							RateLimitPerUser: 10,
 						})
 						if err != nil {
 							log.Printf("ERR[%s]: MessageThreadStartComplex(): %s", agentMap[c.CallID], err.Error())
+							continue
 						} else {
 							callMap[c.CallID] = t
 							lastUpdatedMap[c.CallID] = time.Now()
