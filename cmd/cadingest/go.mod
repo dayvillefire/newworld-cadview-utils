@@ -5,13 +5,13 @@ go 1.20
 replace github.com/dayvillefire/newworld-cadview-agent/agent => ../../../newworld-cadview-agent/agent
 
 require (
-	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20230531144245-2e2a6797601a
+	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20230720001455-06e7f324f3e5
 	gorm.io/driver/mysql v1.5.1
-	gorm.io/gorm v1.25.1
+	gorm.io/gorm v1.25.2
 )
 
 require (
-	github.com/chromedp/cdproto v0.0.0-20230524011726-8501c74e8228 // indirect
+	github.com/chromedp/cdproto v0.0.0-20230716001748-3ed7c525ec8b // indirect
 	github.com/chromedp/chromedp v0.9.1 // indirect
 	github.com/chromedp/sysutil v1.0.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
@@ -22,5 +22,5 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
-	golang.org/x/sys v0.8.0 // indirect
+	golang.org/x/sys v0.10.0 // indirect
 )
