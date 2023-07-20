@@ -14,6 +14,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/dayvillefire/newworld-cadview-agent/agent"
 	"github.com/dayvillefire/newworld-cadview-utils/util"
+	"github.com/jbuchbinder/shims"
 )
 
 var (
@@ -181,7 +182,9 @@ func main() {
 							continue
 						} else {
 							callMap[c.CallID] = t
-							lastUpdatedMap[c.CallID] = time.Now()
+
+							// Set last updated to be long enough ago that this works
+							lastUpdatedMap[c.CallID] = time.Now().Add(time.Hour * -24)
 						}
 					}
 
@@ -195,54 +198,55 @@ func main() {
 							log.Printf("ERR[%s]: ChannelMessageSendComplex(%d): %s", agentMap[c.CallID], c.CallID, err.Error())
 						}
 					}
-				} else {
-					// Existing, so check for anything and append
-					myAgent := a[agentMap[c.CallID]]
-					log.Printf("INFO[%s]: Fetching call logs for call id %d", agentMap[c.CallID], c.CallID)
-					logs, err := myAgent.GetCallLogs(fmt.Sprintf("%d", c.CallID))
+				}
+
+				// Existing, so check for anything and append
+				myAgent := a[agentMap[c.CallID]]
+				log.Printf("INFO[%s]: Fetching call logs for call id %d", agentMap[c.CallID], c.CallID)
+				logs, err := myAgent.GetCallLogs(fmt.Sprintf("%d", c.CallID))
+				if err != nil {
+					log.Printf("ERR[%s]: GetCallLogs(%d): %s", agentMap[c.CallID], c.CallID, err.Error())
+					break
+				}
+
+				// Sort logs by date before doing this
+				sort.SliceStable(logs, func(i, j int) bool {
+					return shims.SingleValueDiscardError(time.Parse("01/02/2006 15:04:05", logs[i].LogDateTime)).Local().Unix() <
+						shims.SingleValueDiscardError(time.Parse("01/02/2006 15:04:05", logs[j].LogDateTime)).Local().Unix()
+				})
+
+				for _, l := range logs {
+					// LogDateTime:"02/10/2023 10:40:54"
+					t, err := time.ParseInLocation("01/02/2006 15:04:05", l.LogDateTime, time.Local)
+					//log.Printf("TRACE: t = %#v, l.LogDateTime = %s, lastUpdatedMap[c.CallID] = %#v", t, l.LogDateTime, lastUpdatedMap[c.CallID])
+					//log.Printf("TRACE: l = %#v", l)
 					if err != nil {
-						log.Printf("ERR[%s]: GetCallLogs(%d): %s", agentMap[c.CallID], c.CallID, err.Error())
-						break
+						log.Printf("WARN: Could not parse date %s", l.LogDateTime)
+						continue
 					}
-
-					// Sort logs by date before doing this
-					sort.SliceStable(logs, func(i, j int) bool {
-						return logs[i].LogDateTime < logs[j].LogDateTime
-					})
-
-					for _, l := range logs {
-						// LogDateTime:"02/10/2023 10:40:54"
-						t, err := time.ParseInLocation("01/02/2006 15:04:05", l.LogDateTime, time.Local)
-						//log.Printf("TRACE: t = %#v, l.LogDateTime = %s, lastUpdatedMap[c.CallID] = %#v", t, l.LogDateTime, lastUpdatedMap[c.CallID])
-						//log.Printf("TRACE: l = %#v", l)
-						if err != nil {
-							log.Printf("WARN: Could not parse date %s", l.LogDateTime)
-							continue
-						}
-						if t.After(lastUpdatedMap[c.CallID]) {
-							found := false
-							for _, st := range Config.LoggedStatuses {
-								if st == l.ActionDescription {
-									found = true
-									_, err = discordSession.ChannelMessageSendComplex(callMap[c.CallID].ID, &discordgo.MessageSend{
-										Content:         fmt.Sprintf("%s: %s (%s)", l.LogDateTime, l.Description, l.LastName),
-										AllowedMentions: &discordgo.MessageAllowedMentions{},
-									})
-									if err != nil {
-										log.Printf("ERR: ChannelMessageSendComplex(%d): %s", c.CallID, err.Error())
-									}
+					if t.Local().After(lastUpdatedMap[c.CallID]) {
+						found := false
+						for _, st := range Config.LoggedStatuses {
+							if st == l.ActionDescription {
+								found = true
+								_, err = discordSession.ChannelMessageSendComplex(callMap[c.CallID].ID, &discordgo.MessageSend{
+									Content:         fmt.Sprintf("%s: %s (%s)", l.LogDateTime, l.Description, l.LastName),
+									AllowedMentions: &discordgo.MessageAllowedMentions{},
+								})
+								if err != nil {
+									log.Printf("ERR: ChannelMessageSendComplex(%d): %s", c.CallID, err.Error())
 								}
 							}
-							if !found {
-								log.Printf("INFO: Skipping log item %#v", l)
-							}
-
-							// Update
-							lastUpdatedMap[c.CallID] = t
 						}
+						if !found {
+							log.Printf("INFO: Skipping log item %#v", l)
+						}
+
+						// Update
+						lastUpdatedMap[c.CallID] = t.Local()
 					}
-					log.Printf("INFO[%s]: Call %d has %d log entries", agentMap[c.CallID], c.CallID, len(logs))
 				}
+				log.Printf("INFO[%s]: Call %d has %d log entries", agentMap[c.CallID], c.CallID, len(logs))
 			}
 
 			log.Printf("INFO: Purging calls which have not been updated in over %d minutes", Config.PurgeMinutes)
