@@ -1,1 +1,2 @@
 cmd/cadpublish/config.yaml filter=git-crypt diff=git-crypt
+cmd/cadpublish-threadpurger/const.go filter=git-crypt diff=git-crypt
