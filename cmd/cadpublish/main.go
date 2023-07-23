@@ -150,6 +150,8 @@ func main() {
 
 				_, ok := callMap[c.CallID]
 				if !ok {
+					log.Printf("INFO[%s]: CallID %d does not exist in call map, creating thread", agentMap[c.CallID], c.CallID)
+
 					// Initial message ID
 					m := discordgo.MessageSend{
 						Content:         fmt.Sprintf("%s PRI %s (%s)", c.Location, c.CallPriority, c.CallType),
@@ -180,12 +182,14 @@ func main() {
 						if err != nil {
 							log.Printf("ERR[%s]: MessageThreadStartComplex(): %s", agentMap[c.CallID], err.Error())
 							continue
-						} else {
-							callMap[c.CallID] = t
-
-							// Set last updated to be long enough ago that this works
-							lastUpdatedMap[c.CallID] = time.Now().Add(time.Hour * -24)
 						}
+
+						// Assign the discord channel to the thread
+						log.Printf("INFO[%s]: Assigning thread %s to callMap for CallID %d", agentMap[c.CallID], t.ID, c.CallID)
+						callMap[c.CallID] = t
+
+						// Set last updated to be long enough ago that this works
+						lastUpdatedMap[c.CallID] = time.Now().Local().Add(time.Hour * -24)
 					}
 
 					// Send a message with initial times, etc
@@ -247,17 +251,30 @@ func main() {
 					}
 				}
 				log.Printf("INFO[%s]: Call %d has %d log entries", agentMap[c.CallID], c.CallID, len(logs))
-			}
 
-			log.Printf("INFO: Purging calls which have not been updated in over %d minutes", Config.PurgeMinutes)
-			for k, v := range lastUpdatedMap {
-				if time.Now().Local().Sub(v) > time.Minute*time.Duration(Config.PurgeMinutes) {
-					log.Printf("INFO: Removing call %d with timestamp %d, now = %d", k, v.Unix(), time.Now().Local().Unix())
-					delete(lastUpdatedMap, k)
-					delete(callMap, k)
-					delete(agentMap, k)
+				// Check for call being cleared
+				if c.ClosedFlag {
+					log.Printf("INFO[%s] Call %d has closed flag, removing from cache", agentMap[c.CallID], c.CallID)
+					delete(lastUpdatedMap, c.CallID)
+					delete(callMap, c.CallID)
+					delete(agentMap, c.CallID)
 				}
 			}
+
+			/*
+
+				// Should no longer be needed, as the calls will purge when it sees a "closedFlag" of true.
+
+				log.Printf("INFO: Purging calls which have not been updated in over %d minutes", Config.PurgeMinutes)
+				for k, v := range lastUpdatedMap {
+					if time.Now().Local().Sub(v) > time.Minute*time.Duration(Config.PurgeMinutes) {
+						log.Printf("INFO: Removing call %d with timestamp %d, now = %d", k, v.Unix(), time.Now().Local().Unix())
+						delete(lastUpdatedMap, k)
+						delete(callMap, k)
+						delete(agentMap, k)
+					}
+				}
+			*/
 
 			if shuttingDown {
 				log.Printf("INFO: Shutting down")

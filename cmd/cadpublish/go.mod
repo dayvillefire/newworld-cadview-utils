@@ -9,8 +9,8 @@ replace (
 
 require (
 	github.com/bwmarrin/discordgo v0.27.1
-	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20230531144245-2e2a6797601a
-	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20230301122230-b60519495264
+	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20230720001455-06e7f324f3e5
+	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20230720152944-dce62ea0566b
 	github.com/jbuchbinder/shims v0.0.0-20230627161102-16aacaee8147
 	gopkg.in/yaml.v2 v2.4.0
 )
