@@ -87,6 +87,14 @@ func main() {
 		for k, v := range threads.Threads {
 			log.Printf("[%d] %s (%d messages)", k, v.Topic, v.MessageCount)
 			if v.MessageCount > 2 {
+				/*
+					if v.ThreadMetadata.AutoArchiveDuration != 300 {
+						_, err := discordSession.ChannelEdit(v.ID, &discordgo.ChannelEdit{AutoArchiveDuration: 300})
+						if err != nil {
+							log.Printf("ERR: %s", err.Error())
+						}
+					}
+				*/
 				continue
 			}
 			_, err := discordSession.ChannelEdit(v.ID, &discordgo.ChannelEdit{Archived: &t})

@@ -175,9 +175,9 @@ func main() {
 
 						t, err := discordSession.MessageThreadStartComplex(Config.Discord.ChannelID, res.ID, &discordgo.ThreadStart{
 							Name: x,
-							//AutoArchiveDuration: 60,
+							//AutoArchiveDuration: 300,
 							Invitable:        false,
-							RateLimitPerUser: 10,
+							RateLimitPerUser: 30,
 						})
 						if err != nil {
 							log.Printf("ERR[%s]: MessageThreadStartComplex(): %s", agentMap[c.CallID], err.Error())
