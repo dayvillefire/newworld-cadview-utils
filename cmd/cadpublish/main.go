@@ -66,7 +66,7 @@ func main() {
 
 	_, err = os.Stat(Config.Paths.SerializationFile)
 	if err == nil {
-		raw, err := ioutil.ReadFile(Config.Paths.SerializationFile)
+		raw, err := os.ReadFile(Config.Paths.SerializationFile)
 		if err != nil {
 			log.Printf("ERR: ReadFile(%s): %s", Config.Paths.SerializationFile, err.Error())
 		}
@@ -194,6 +194,17 @@ func main() {
 
 					// Send a message with initial times, etc
 					{
+						iid := fmt.Sprintf("Unit %s Incident #%s", c.PrimaryUnit, c.IncidentNumber)
+
+						_, err = discordSession.ChannelMessageSendComplex(callMap[c.CallID].ID, &discordgo.MessageSend{
+							Content:         iid,
+							AllowedMentions: &discordgo.MessageAllowedMentions{},
+						})
+						if err != nil {
+							log.Printf("ERR[%s]: ChannelMessageSendComplex(%d): %s", agentMap[c.CallID], c.CallID, err.Error())
+						}
+					}
+					{
 						_, err = discordSession.ChannelMessageSendComplex(callMap[c.CallID].ID, &discordgo.MessageSend{
 							Content:         fmt.Sprintf("Call dispatched at %s", c.DispatchedDateTime),
 							AllowedMentions: &discordgo.MessageAllowedMentions{},
@@ -212,12 +223,18 @@ func main() {
 					log.Printf("ERR[%s]: GetCallLogs(%d): %s", agentMap[c.CallID], c.CallID, err.Error())
 					break
 				}
+				if Config.Debug {
+					log.Printf("DEBUG[%s]: logs (before sort) [# = %d]= %#v", agentMap[c.CallID], len(logs), logs)
+				}
 
 				// Sort logs by date before doing this
 				sort.SliceStable(logs, func(i, j int) bool {
 					return shims.SingleValueDiscardError(time.Parse("01/02/2006 15:04:05", logs[i].LogDateTime)).Local().Unix() <
 						shims.SingleValueDiscardError(time.Parse("01/02/2006 15:04:05", logs[j].LogDateTime)).Local().Unix()
 				})
+				if Config.Debug {
+					log.Printf("DEBUG[%s]: logs (after sort) [# = %d]= %#v", agentMap[c.CallID], len(logs), logs)
+				}
 
 				for _, l := range logs {
 					// LogDateTime:"02/10/2023 10:40:54"

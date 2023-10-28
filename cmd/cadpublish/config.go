@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"os"
 
 	"gopkg.in/yaml.v2"
 )
@@ -41,7 +41,7 @@ func LoadConfigWithDefaults(configPath string) (*AppConfig, error) {
 	cachedConfigPath = configPath
 	c := &AppConfig{}
 	c.SetDefaults()
-	data, err := ioutil.ReadFile(configPath)
+	data, err := os.ReadFile(configPath)
 	if err != nil {
 		return c, err
 	}
