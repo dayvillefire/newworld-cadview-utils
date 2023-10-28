@@ -1,4 +1,5 @@
 go.sum
+go.work.sum
 *~
 calls.json
 
