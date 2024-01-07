@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
@@ -99,6 +98,9 @@ func main() {
 				}
 			}
 			for k, v := range a {
+				log.Printf("INFO[ReAuth]: %s: Waiting until wait counter is 0", k)
+				v.WaitGroup().Wait()
+				log.Printf("INFO[ReAuth]: %s: Wait counter is 0", k)
 				reauth := v.MakeCopy()
 				err := reauth.Init()
 				if err != nil {
@@ -316,7 +318,7 @@ func main() {
 	if err != nil {
 		log.Printf("ERR: ToGOB64(): %s", err.Error())
 	}
-	err = ioutil.WriteFile(Config.Paths.SerializationFile, []byte(data), 0644)
+	err = os.WriteFile(Config.Paths.SerializationFile, []byte(data), 0644)
 	if err != nil {
 		log.Printf("ERR: WriteFile(%s): %s", Config.Paths.SerializationFile, err.Error())
 	}
