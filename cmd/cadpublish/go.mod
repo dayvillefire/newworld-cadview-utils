@@ -11,12 +11,12 @@ require (
 	github.com/bwmarrin/discordgo v0.27.1
 	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20240315224611-a4e6e0837d6b
 	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20240107151630-34a4eca519d3
-	github.com/jbuchbinder/shims v0.0.0-20240127163204-18a2ea0be2dc
+	github.com/jbuchbinder/shims v0.0.0-20240327163617-a815b7a98986
 	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
-	github.com/chromedp/cdproto v0.0.0-20240312231614-1e5096e63154 // indirect
+	github.com/chromedp/cdproto v0.0.0-20240328024531-fe04f09ede24 // indirect
 	github.com/chromedp/chromedp v0.9.5 // indirect
 	github.com/chromedp/sysutil v1.0.0 // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
@@ -30,5 +30,5 @@ require (
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/net v0.22.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
-	gorm.io/gorm v1.25.7 // indirect
+	gorm.io/gorm v1.25.9 // indirect
 )
