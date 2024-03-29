@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	configFile = flag.String("config", "config.yaml", "Configuration file")
+	configFile = flag.String("config", "cadpublish.yaml", "Configuration file")
 
 	a              = map[string]*agent.Agent{}
 	initialized    bool
