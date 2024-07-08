@@ -10,7 +10,7 @@ replace (
 require (
 	github.com/bwmarrin/discordgo v0.28.1
 	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20240703195347-1736dac6778d
-	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20240329180816-ff3122285e85
+	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20240703195422-2f94b5eb7500
 	github.com/jbuchbinder/shims v0.0.0-20240506232043-4fac4ec97ccb
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -27,8 +27,8 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
-	golang.org/x/crypto v0.24.0 // indirect
+	golang.org/x/crypto v0.25.0 // indirect
 	golang.org/x/net v0.26.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 	gorm.io/gorm v1.25.10 // indirect
 )
