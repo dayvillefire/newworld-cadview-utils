@@ -9,14 +9,14 @@ replace (
 
 require (
 	github.com/bwmarrin/discordgo v0.28.1
-	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20241102015859-968135979f51
-	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20241102015955-53c8095e7155
+	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20241220200249-1e4d2b17b36e
+	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20241220200326-ad94b5bfee75
 	github.com/jbuchbinder/shims v0.0.0-20240506232043-4fac4ec97ccb
 	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
-	github.com/chromedp/cdproto v0.0.0-20241208230723-d1c7de7e5dd2 // indirect
+	github.com/chromedp/cdproto v0.0.0-20241222144035-c16d098c0fb6 // indirect
 	github.com/chromedp/chromedp v0.11.2 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
