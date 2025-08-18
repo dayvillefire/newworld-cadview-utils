@@ -17,7 +17,7 @@ var (
 	a           agent.Agent
 	initialized bool
 
-	url       = flag.String("url", "https://cadview.qvec.org/NewWorld.CadView", "CAD login URL")
+	url       = flag.String("url", "https://cadview.qvec.org/", "CAD login URL")
 	user      = flag.String("username", "", "CAD username")
 	pass      = flag.String("password", "", "CAD password")
 	fdid      = flag.String("fdid", "", "FDID")
@@ -124,7 +124,7 @@ func initAgent() error {
 	log.Printf("INFO: Initializing agent")
 	a = agent.Agent{
 		Debug:    false,
-		LoginUrl: *url,
+		BaseUrl:  *url,
 		Username: *user,
 		Password: *pass,
 		FDID:     *fdid,

@@ -1,6 +1,8 @@
 module github.com/dayvillefire/newworld-cadview-utils/cmd/cadpublish
 
-go 1.23
+go 1.24
+
+toolchain go1.24.3
 
 replace (
 	github.com/dayvillefire/newworld-cadview-agent/agent => ../../../newworld-cadview-agent/agent
@@ -8,17 +10,18 @@ replace (
 )
 
 require (
-	github.com/bwmarrin/discordgo v0.28.1
-	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20241220200249-1e4d2b17b36e
-	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20241220200326-ad94b5bfee75
-	github.com/jbuchbinder/shims v0.0.0-20240506232043-4fac4ec97ccb
+	github.com/bwmarrin/discordgo v0.29.0
+	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250818122715-a1eb7f1d8423
+	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20241231155945-3020ef1e2c90
+	github.com/jbuchbinder/shims v0.0.0-20250315180801-ea13cafaf717
 	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
-	github.com/chromedp/cdproto v0.0.0-20241222144035-c16d098c0fb6 // indirect
-	github.com/chromedp/chromedp v0.11.2 // indirect
+	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d // indirect
+	github.com/chromedp/chromedp v0.14.1 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect
+	github.com/go-json-experiment/json v0.0.0-20250813233538-9b1f9ea2e11b // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
 	github.com/gobwas/pool v0.2.1 // indirect
 	github.com/gobwas/ws v1.4.0 // indirect
@@ -27,9 +30,9 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.9.0 // indirect
-	golang.org/x/crypto v0.31.0 // indirect
-	golang.org/x/net v0.26.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
-	gorm.io/gorm v1.25.12 // indirect
+	golang.org/x/crypto v0.41.0 // indirect
+	golang.org/x/net v0.42.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/text v0.28.0 // indirect
+	gorm.io/gorm v1.30.1 // indirect
 )

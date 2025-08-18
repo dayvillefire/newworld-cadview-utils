@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"io/ioutil"
 	"log"
 	"os"
 
@@ -67,7 +66,7 @@ func main() {
 		}
 		log.Printf("Processing %s", dirent.Name())
 		fullPath := *backupdir + string(os.PathSeparator) + dirent.Name()
-		contents, err := ioutil.ReadFile(fullPath)
+		contents, err := os.ReadFile(fullPath)
 		if err != nil {
 			log.Printf("ERROR: Reading file %s: %s", dirent.Name(), err.Error())
 			continue

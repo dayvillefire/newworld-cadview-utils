@@ -23,7 +23,7 @@ var (
 	initialized    bool
 	discordSession *discordgo.Session
 	discordInit    bool
-	stop           = make(chan os.Signal)
+	stop           = make(chan os.Signal, 1)
 	shuttingDown   bool
 
 	callMap        = map[int64]*discordgo.Channel{}
@@ -48,10 +48,12 @@ func main() {
 
 	log.Printf("INFO: Config: %#v", Config)
 
-	signal.Notify(stop, syscall.SIGTERM)
-	signal.Notify(stop, syscall.SIGQUIT)
-	signal.Notify(stop, syscall.SIGINT)
-	signal.Notify(stop, syscall.SIGHUP)
+	signal.Notify(stop,
+		syscall.SIGTERM,
+		syscall.SIGQUIT,
+		syscall.SIGINT,
+		syscall.SIGHUP,
+	)
 
 	err = initAgent()
 	if err != nil {
@@ -336,7 +338,7 @@ func initAgent() error {
 		log.Printf("INFO[Agent %s]: Initializing", n)
 		thisAgent := agent.Agent{
 			Debug:    false,
-			LoginUrl: cd.URL,
+			BaseUrl:  cd.URL,
 			Username: cd.Username,
 			Password: cd.Password,
 			FDID:     cd.FDID,
