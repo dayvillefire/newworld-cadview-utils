@@ -1,4 +1,15 @@
-version: '3'
+version: '3.5'
 services:
-  goservice:
-    build: .
+  
+  cadpublish-app:
+    container_name: cadpublish-app
+    image: jbuchbinder/cadpublish
+    restart: always
+    volumes:
+      - ./cadpublish.yaml:/app/config.yaml:ro
+
+  cadpublish-shell:
+    container_name: cadpublish-shell
+    image: chromedp/headless-shell
+    ports:
+      - "9222:9222"

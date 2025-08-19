@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	Config           *AppConfig
-	cachedConfigPath string
+	Config *AppConfig
+	//cachedConfigPath string
 )
 
 type CadInstance struct {
@@ -17,6 +17,7 @@ type CadInstance struct {
 	Username string `yaml:"username"`
 	Password string `yaml:"password"`
 	FDID     string `yaml:"fdid"`
+	CDP      string `yaml:"cdp"`
 }
 
 type AppConfig struct {
@@ -38,7 +39,7 @@ func (c *AppConfig) SetDefaults() {
 }
 
 func LoadConfigWithDefaults(configPath string) (*AppConfig, error) {
-	cachedConfigPath = configPath
+	//cachedConfigPath = configPath
 	c := &AppConfig{}
 	c.SetDefaults()
 	data, err := os.ReadFile(configPath)

@@ -342,6 +342,7 @@ func initAgent() error {
 			Username: cd.Username,
 			Password: cd.Password,
 			FDID:     cd.FDID,
+			CDP:      cd.CDP,
 		}
 		err := thisAgent.Init()
 		if err != nil {

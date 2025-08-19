@@ -4,7 +4,9 @@ clean:
 	go clean -v
 
 binary: clean
-	GOARM=5 GOARCH=arm go build -v
+	go build -v
 
-copy: binary
-	rsync -rvutpP cadpublish cadpublish.yaml jbuchbinder@manage:
+docker: binary
+	docker build -t jbuchbinder/cadpublish .
+	docker push jbuchbinder/cadpublish
+
