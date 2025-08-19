@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -51,6 +50,9 @@ func main() {
 	}
 
 	oris, err := a.GetORIs()
+	if err != nil {
+		panic(err)
+	}
 	ori := agent.FDIDToORI(oris, *fdid)
 
 	for _, dts := range dates {
@@ -91,7 +93,7 @@ func main() {
 			}
 
 			log.Printf("INFO: Writing call %s to %s/%s (%d bytes)", iid, b, iid, len(data))
-			err = ioutil.WriteFile(b+string(os.PathSeparator)+iid, data, 0644)
+			err = os.WriteFile(b+string(os.PathSeparator)+iid, data, 0644)
 			if err != nil {
 				log.Printf("ERR: %s", err.Error())
 				continue

@@ -48,6 +48,7 @@ func main() {
 			&agent.UnitLogObj{},
 			&agent.CallLogObj{},
 			&agent.CallObj{},
+			&agent.UnitStatus{},
 		)
 		if err != nil {
 			log.Printf("ERR: db.AutoMigrate: %s", err.Error())
