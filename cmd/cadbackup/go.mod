@@ -6,7 +6,7 @@ toolchain go1.24.3
 
 replace github.com/dayvillefire/newworld-cadview-agent/agent => ../../../newworld-cadview-agent/agent
 
-require github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250617175607-65a33c3cb060
+require github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250819181530-fe66698c5d3c
 
 require (
 	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d // indirect

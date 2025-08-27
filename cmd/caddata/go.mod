@@ -2,13 +2,11 @@ module github.com/dayvillefire/newworld-cadview-utils/cmd/caddata
 
 go 1.24.3
 
-replace (
-	github.com/jbuchbinder/shims => ../../../../jbuchbinder/shims
-)
+replace github.com/jbuchbinder/shims => ../../../../jbuchbinder/shims
 
 require (
-	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250818140637-4efac7fe3bb7
-	github.com/jbuchbinder/shims v0.0.0-20250315180801-ea13cafaf717
+	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250819181530-fe66698c5d3c
+	github.com/jbuchbinder/shims v0.0.0-20250818154854-22c0ac83b788
 )
 
 require (
