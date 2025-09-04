@@ -10,8 +10,9 @@ var (
 	filestore  = flag.String("filestore", "cad.json", "Store for JSON serialized data")
 	add        = flag.Bool("add", false, "Add to filestore on ingest")
 	ori        = flag.String("ori", "04042", "ORI/FDID")
-	skipprefix = flag.String("skip-prefix", "STA,RES,A,FM", "Skip prefixes for unit analyses")
+	skipprefix = flag.String("skip-prefix", "STA,RES,A,FM,MEDIC,QVMEDIC", "Skip prefixes for unit analyses")
 	reqsuffix  = flag.String("require-suffix", "", "Require certain suffix")
+	masuffix   = flag.String("ma-suffix", "", "Mutual aid suffix")
 )
 
 func main() {

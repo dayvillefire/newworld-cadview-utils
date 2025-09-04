@@ -37,9 +37,11 @@ func stats() {
 
 	{
 		missedcalls := 0
+		maonly := 0
 		missedoffhourcalls := 0
 		totalcalls := len(cc)
 		totaloffhourcalls := 0
+		unitcount := map[string]int{}
 
 		shims.ArrayFunc(cc, func(in agent.CADCall) {
 			offhours := false
@@ -70,6 +72,7 @@ func stats() {
 			fmt.Printf("\tPriority: %s | %s | %s\n", in.Call.CallPriority, in.Call.FireCallType, in.Call.Quadrant)
 
 			un := []string{}
+			maun := []string{}
 			enroute := ""
 			onscene := ""
 			shims.ArrayFunc(in.Units, func(u agent.UnitObj) {
@@ -78,10 +81,17 @@ func stats() {
 						return
 					}
 				}
+				if *masuffix != "" && strings.HasSuffix(u.UnitNumber, strings.TrimSpace(*masuffix)) {
+					maun = append(maun, u.UnitNumber)
+					return
+				}
 				if *reqsuffix != "" && !strings.HasSuffix(u.UnitNumber, strings.TrimSpace(*reqsuffix)) {
 					return
 				}
 				un = append(un, u.UnitNumber)
+				{
+					unitcount[u.UnitNumber] += 1
+				}
 
 				// Determine if enroute / onscene times are earliest
 				if u.EnrouteDateTime != "" {
@@ -117,7 +127,14 @@ func stats() {
 				if offhours {
 					missedoffhourcalls += 1
 				}
+				if len(maun) > 0 {
+					maonly += 1
+				}
 			}
+			if len(maun) > 0 {
+				fmt.Printf("\tMutual Aid Units: %s\n", strings.Join(maun, ", "))
+			}
+			fmt.Println("")
 		})
 		fmt.Printf("\n")
 		fmt.Printf("Aggregate => Total calls: %d, Missed calls: %d, Missed call %%: %.2f\n",
@@ -126,5 +143,12 @@ func stats() {
 		fmt.Printf("Off Hours => Total calls: %d, Missed calls: %d, Missed call %%: %.2f\n",
 			totaloffhourcalls, missedoffhourcalls,
 			float64(float64(missedoffhourcalls)/float64(totaloffhourcalls))*100)
+		if *masuffix != "" {
+			fmt.Printf("Mutual Aid Only: %d calls\n", maonly)
+		}
+
+		for unit, count := range unitcount {
+			fmt.Printf("\t%s : %d\n", unit, count)
+		}
 	}
 }
