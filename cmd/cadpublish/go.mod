@@ -11,8 +11,8 @@ replace (
 
 require (
 	github.com/bwmarrin/discordgo v0.29.0
-	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250819181530-fe66698c5d3c
-	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20250819192840-82fd8305ca8c
+	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250904121444-9cc78bf4f1c8
+	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20250827170532-7592752a7cb8
 	github.com/jbuchbinder/shims v0.0.0-20250818154854-22c0ac83b788
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -34,5 +34,5 @@ require (
 	golang.org/x/net v0.42.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/text v0.28.0 // indirect
-	gorm.io/gorm v1.30.1 // indirect
+	gorm.io/gorm v1.30.2 // indirect
 )

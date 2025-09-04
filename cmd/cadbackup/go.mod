@@ -6,7 +6,7 @@ toolchain go1.24.3
 
 replace github.com/dayvillefire/newworld-cadview-agent/agent => ../../../newworld-cadview-agent/agent
 
-require github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250819181530-fe66698c5d3c
+require github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250904121444-9cc78bf4f1c8
 
 require (
 	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d // indirect
@@ -22,5 +22,5 @@ require (
 	github.com/mailru/easyjson v0.9.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/text v0.28.0 // indirect
-	gorm.io/gorm v1.30.1 // indirect
+	gorm.io/gorm v1.30.2 // indirect
 )

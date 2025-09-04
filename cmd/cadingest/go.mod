@@ -7,9 +7,9 @@ toolchain go1.24.3
 replace github.com/dayvillefire/newworld-cadview-agent/agent => ../../../newworld-cadview-agent/agent
 
 require (
-	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250819181530-fe66698c5d3c
+	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250904121444-9cc78bf4f1c8
 	gorm.io/driver/mysql v1.6.0
-	gorm.io/gorm v1.30.1
+	gorm.io/gorm v1.30.2
 )
 
 require (
