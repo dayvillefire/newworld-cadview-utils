@@ -5,9 +5,9 @@ go 1.25
 replace github.com/dayvillefire/newworld-cadview-agent/agent => ../../../newworld-cadview-agent/agent
 
 require (
-	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250904121444-9cc78bf4f1c8
+	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20251105145945-527f847ee336
 	gorm.io/driver/mysql v1.6.0
-	gorm.io/gorm v1.31.0
+	gorm.io/gorm v1.31.1
 )
 
 require (

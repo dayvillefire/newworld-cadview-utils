@@ -5,7 +5,7 @@ go 1.25
 replace github.com/jbuchbinder/shims => ../../../../jbuchbinder/shims
 
 require (
-	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20250904121444-9cc78bf4f1c8
+	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20251105145945-527f847ee336
 	github.com/jbuchbinder/shims v0.0.0-20251029164657-6c80f5d6bc01
 )
 
@@ -21,5 +21,5 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
-	gorm.io/gorm v1.31.0 // indirect
+	gorm.io/gorm v1.31.1 // indirect
 )
