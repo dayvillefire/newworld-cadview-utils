@@ -10,8 +10,8 @@ replace (
 
 require (
 	github.com/bwmarrin/discordgo v0.29.0
-	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20251105145945-527f847ee336
-	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20251029171226-95b01170ec71
+	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20251213184027-fca68661977f
+	github.com/dayvillefire/newworld-cadview-utils/util v0.0.0-20251105150140-dd12e8e3d619
 	github.com/jbuchbinder/shims v0.0.0-20251029164657-6c80f5d6bc01
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -27,8 +27,8 @@ require (
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	golang.org/x/crypto v0.43.0 // indirect
-	golang.org/x/sys v0.37.0 // indirect
-	golang.org/x/text v0.30.0 // indirect
+	golang.org/x/crypto v0.46.0 // indirect
+	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
 	gorm.io/gorm v1.31.1 // indirect
 )

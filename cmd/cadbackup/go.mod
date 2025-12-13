@@ -4,7 +4,7 @@ go 1.25
 
 replace github.com/dayvillefire/newworld-cadview-agent/agent => ../../../newworld-cadview-agent/agent
 
-require github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20251105145945-527f847ee336
+require github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20251213184027-fca68661977f
 
 require (
 	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d // indirect
@@ -16,7 +16,7 @@ require (
 	github.com/gobwas/ws v1.4.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	golang.org/x/sys v0.37.0 // indirect
-	golang.org/x/text v0.30.0 // indirect
+	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
 	gorm.io/gorm v1.31.1 // indirect
 )
