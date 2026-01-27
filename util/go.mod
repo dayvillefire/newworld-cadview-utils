@@ -3,7 +3,7 @@ module github.com/dayvillefire/newworld-cadview-utils/util
 go 1.25
 
 require (
-	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20251213184027-fca68661977f
+	github.com/dayvillefire/newworld-cadview-agent/agent v0.0.0-20260127145141-fa394e8fbe56
 	github.com/jbuchbinder/shims v0.0.0-20251029164657-6c80f5d6bc01
 )
 
@@ -17,7 +17,7 @@ require (
 	github.com/gobwas/ws v1.4.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	golang.org/x/sys v0.39.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/sys v0.40.0 // indirect
+	golang.org/x/text v0.33.0 // indirect
 	gorm.io/gorm v1.31.1 // indirect
 )
