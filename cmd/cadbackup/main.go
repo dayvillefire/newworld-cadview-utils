@@ -71,7 +71,8 @@ func main() {
 				continue
 			}
 			var iid string
-			for _, ins := range cadcall.Incidents {
+			for k, ins := range cadcall.Incidents {
+				cadcall.Incidents[k].CallID = cadcall.Call.CallID
 				if ins.ORI == *fdid {
 					iid = strings.TrimSpace(ins.IncidentNumber)
 				}
