@@ -5,8 +5,8 @@ import (
 	"flag"
 	"log"
 	"os"
+	"time"
 
-	"github.com/dayvillefire/newworld-cadview-agent/agent"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -35,20 +35,21 @@ func main() {
 	if !*dryrun {
 		db, err = gorm.Open(mysql.New(mysql.Config{
 			DSN: *database,
-		}), &gorm.Config{Logger: l})
+		}), &gorm.Config{
+			DefaultTransactionTimeout: time.Second * 10,
+			Logger:                    l,
+		})
 		if err != nil {
 			log.Printf("ERR: gorm.Open: %s", err.Error())
 			panic(err)
 		}
 		err = db.AutoMigrate(
-			&agent.CADCall{},
-			&agent.IncidentObj{},
-			&agent.NarrativeObj{},
-			&agent.UnitObj{},
-			&agent.UnitLogObj{},
-			&agent.CallLogObj{},
-			&agent.CallObj{},
-			&agent.UnitStatus{},
+			&IncidentObj{},
+			&NarrativeObj{},
+			&UnitObj{},
+			&UnitLogObj{},
+			&CallLogObj{},
+			&CallObj{},
 		)
 		if err != nil {
 			log.Printf("ERR: db.AutoMigrate: %s", err.Error())
@@ -73,22 +74,95 @@ func main() {
 			continue
 		}
 
-		var status agent.CADCall
+		var status CADCall
 		err = json.Unmarshal(contents, &status)
 		if err != nil {
 			log.Printf("ERROR: GetStatus(): %s", err.Error())
 			continue
 		}
+		/*
+			for k := range status.Incidents {
+				status.Incidents[k].CallID = int64(status.Call.CallID)
+			}
 
+			for k := range status.Units {
+				status.Units[k].CallID = int64(status.Call.CallID)
+			}
+
+			for k := range status.Narratives {
+				status.Narratives[k].CallID = int64(status.Call.CallID)
+			}
+
+			for k := range status.Logs {
+				status.Logs[k].CallID = int64(status.Call.CallID)
+			}
+
+			for k := range status.UnitLogs {
+				status.UnitLogs[k].CallID = int64(status.Call.CallID)
+			}
+		*/
 		if *debug {
 			log.Printf("DEBUG: CADCall : %#v", status)
 		}
 
 		if !*dryrun {
-			tx := db.Create(&status)
+			log.Printf("Importing call record for %s", status.Call.IncidentNumber)
+			tx := db.Create(&(status.Call))
 			if tx.Error != nil {
 				log.Printf("ERROR: %s", tx.Error)
 			}
+			{
+				log.Printf("Importing %d incident records", len(status.Incidents))
+				for _, v := range status.Incidents {
+					tx := db.Create(&v)
+					if tx.Error != nil {
+						log.Printf("ERROR: %s", tx.Error)
+					}
+				}
+			}
+			{
+				log.Printf("Importing %d narratives records", len(status.Narratives))
+				for _, v := range status.Narratives {
+					tx := db.Create(&v)
+					if tx.Error != nil {
+						log.Printf("ERROR: %s", tx.Error)
+					}
+				}
+			}
+			{
+				log.Printf("Importing %d unit records", len(status.Units))
+				for _, v := range status.Units {
+					tx := db.Create(&v)
+					if tx.Error != nil {
+						log.Printf("ERROR: %s", tx.Error)
+					}
+				}
+			}
+			{
+				log.Printf("Importing %d unit log records", len(status.UnitLogs))
+				for _, v := range status.UnitLogs {
+					tx := db.Create(&v)
+					if tx.Error != nil {
+						log.Printf("ERROR: %s", tx.Error)
+					}
+				}
+			}
+			{
+				log.Printf("Importing %d log records", len(status.Logs))
+				for _, v := range status.Logs {
+					tx := db.Create(&v)
+					if tx.Error != nil {
+						log.Printf("ERROR: %s", tx.Error)
+					}
+				}
+			}
+
+			/*
+				tx := db.Create(&status)
+				if tx.Error != nil {
+					log.Printf("ERROR: %s", tx.Error)
+				}
+			*/
 		}
 
 		//return // DEBUG: TODO: FIXME: XXX
